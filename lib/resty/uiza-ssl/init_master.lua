@@ -27,7 +27,7 @@ local function generate_config(uiza_ssl_instance)
     ngx.log(ngx.ERR, "uiza-ssl: failed to create tmp dir: ", tmp_mkdir_err)
   end
 
-  local _, tmp_chmod_err = shell_blocking.capture_combined({ "chmod", "700", base_dir .. "/tmp" })
+  local _, tmp_chmod_err = shell_blocking.capture_combined({ "chmod", "777", base_dir .. "/tmp" })
   if tmp_chmod_err then
     ngx.log(ngx.ERR, "uiza-ssl: failed to create tmp dir permissions: ", tmp_chmod_err)
   end
@@ -37,18 +37,17 @@ local function generate_config(uiza_ssl_instance)
     ngx.log(ngx.ERR, "uiza-ssl: failed to create letsencrypt/conf.d dir: ", mkdir_err)
   end
 
-  local _, chmod_err = shell_blocking.capture_combined({ "chmod", "700", base_dir .. "/letsencrypt" })
+  local _, chmod_err = shell_blocking.capture_combined({ "chmod", "777", base_dir .. "/letsencrypt" })
   if chmod_err then
     ngx.log(ngx.ERR, "uiza-ssl: failed to create letsencrypt dir permissions: ", chmod_err)
   end
-
-  local _, mkdir_storage_err = shell_blocking.capture_combined({ "mkdir", "-p", base_dir .. "/storage/file" }, { umask = "0022" })
-  if mkdir_storage_err then
-    ngx.log(ngx.ERR, "uiza-ssl: failed to create storage directory: ", mkdir_storage_err)
+  local _, storage_mkdir_err = shell_blocking.capture_combined({ "mkdir", "-p", base_dir .. "/storage/file" }, { umask = "0022" })
+  if storage_mkdir_err then
+    ngx.log(ngx.ERR, "uiza-ssl: failed to create storage directory: ", storage_mkdir_err)
   end
-  local _, chmod_storage_err = shell_blocking.capture_combined({ "chmod", "700", base_dir .. "/storage/file" })
-  if chmod_storage_err then
-    ngx.log(ngx.ERR, "uiza-ssl: failed to set storage directory permissions: ", chmod_storage_err)
+  local _, storage_chmod_err = shell_blocking.capture_combined({ "chmod", "777", base_dir .. "/storage/file" })
+  if storage_chmod_err then
+    ngx.log(ngx.ERR, "uiza-ssl: failed to set storage directory permissions: ", storage_chmod_err)
   end
 end
 
