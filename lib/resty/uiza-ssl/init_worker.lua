@@ -12,13 +12,13 @@ return function(uiza_ssl_instance)
   -- random_seed was called during the "init" master phase, but we want to
   -- ensure each worker process's random seed is different, so force another
   -- call in the init_worker phase.
-  random_seed()
+  -- random_seed()
 
-  local storage = uiza_ssl_instance.storage
-  local storage_adapter = storage.adapter
-  if storage_adapter.setup_worker then
-    storage_adapter:setup_worker()
-  end
+  -- local storage = uiza_ssl_instance.storage
+  -- local storage_adapter = storage.adapter
+  -- if storage_adapter.setup_worker then
+  --   storage_adapter:setup_worker()
+  -- end
 
   renewal.spawn(uiza_ssl_instance)
 end

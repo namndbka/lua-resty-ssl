@@ -14,18 +14,6 @@ function _M.new(uiza_ssl_instance)
   return setmetatable({ options = options }, { __index = _M })
 end
 
-function _M.setup_worker(self)
-  local base_dir = self.options["dir"]
-  local _, mkdir_err = shell_blocking.capture_combined({ "mkdir", "-p", base_dir .. "/storage/file" }, { umask = "0022" })
-  if mkdir_err then
-    ngx.log(ngx.ERR, "uiza-ssl: failed to create storage directory: ", mkdir_err)
-  end
-  local _, chmod_err = shell_blocking.capture_combined({ "chmod", "700", base_dir .. "/storage/file" })
-  if chmod_err then
-    ngx.log(ngx.ERR, "uiza-ssl: failed to set storage directory permissions: ", chmod_err)
-  end
-end
-
 function _M.get(self, key)
   local file, err = io.open(file_path(self, key), "r")
   if err and string.find(err, "No such file") then
